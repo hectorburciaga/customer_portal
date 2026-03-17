@@ -1,0 +1,44 @@
+<!-- ───── SALES ORDERS ───── -->
+<section class="section" id="sales-orders">
+  <div class="page-header">
+    <div>
+      <h2>Pedidos/Ordenes de Renovación</h2>
+      <p>Revisa y gestiona tus pedidos y órdenes de renovación.</p>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-chip active">Todos</span>
+    <span class="filter-chip">Por Renovar</span>
+    <span class="filter-chip">Por Facturar</span>
+    <span class="filter-chip">Completados</span>
+    <div class="filter-spacer"></div>
+    <div class="filter-input">
+      <svg width="12" height="12" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5L14 14"/></svg>
+      <input type="text" placeholder="Buscar Pedidos…" />
+    </div>
+  </div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>ID de Pedido</th><th>Fecha</th><th>Fecha de Entrega</th><th>Artículos</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+      <tbody>
+        {% for so in sales_orders %}
+        <tr data-status="{{ so.status | lower }}" data-search="{{ so.name | lower }} {{ so.status | lower }}">
+          <td><span class="doc-id">{{ so.name }}</span></td>
+          <td>{{ frappe.format_date(so.transaction_date) }}</td>
+          <td>{{ frappe.format_date(so.delivery_date) if so.delivery_date else '—' }}</td>
+          <td>{{ so.item_count }} item{{ 's' if so.item_count != 1 }}</td>
+          <td class="amount">{{ frappe.format_value(so.grand_total, 'Currency') }}</td>
+          <td><span class="badge {{ so.status_class }}">{{ so.status }}</span></td>
+          <td class="td-action">
+            <button class="print-btn js-open-print" data-doctype="Sales Order" data-name="{{ so.name }}" title="Print / PDF">
+              <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M4 5V2h8v3"/><rect x="1" y="5" width="14" height="7" rx="1.5"/><path d="M4 9h8M4 12h5"/><circle cx="12.5" cy="8" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7"><div class="empty-state"><div class="icon">📦</div><p>No existen pedidos o órdenes de renovación.</p></div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>

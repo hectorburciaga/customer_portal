@@ -1,0 +1,64 @@
+<!-- ───── ISSUES ───── -->
+<section class="section" id="issues">
+  <div class="page-header">
+    <div>
+      <h2>Soporte</h2>
+      <p>Tus solicitudes de soporte y su estado actual</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary js-new-issue">
+        <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+        Nueva Solicitud
+      </button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-chip active">Todas</span>
+    <span class="filter-chip">Abiertas</span>
+    <span class="filter-chip">En Progreso</span>
+    <span class="filter-chip">Resueltas</span>
+    <div class="filter-spacer"></div>
+    <div class="filter-input">
+      <svg width="12" height="12" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5L14 14"/></svg>
+      <input type="text" placeholder="Buscar solicitudes…" />
+    </div>
+  </div>
+  <div class="card">
+    <div class="issue-list">
+      {% for iss in issues %}
+      {% set icon_map = {'Low': '🟢', 'Medium': '🟡', 'High': '🔴', 'Urgent': '🔴'} %}
+      {% set color_map = {
+        'Low':    ('var(--green-bg)',  'var(--green)'),
+        'Medium': ('var(--amber-bg)',  'var(--amber)'),
+        'High':   ('var(--red-bg)',    'var(--red)'),
+        'Urgent': ('var(--red-bg)',    'var(--red)')
+      } %}
+      {% set colors = color_map.get(iss.priority, ('var(--surface2)', 'var(--text3)')) %}
+      <div class="issue-row" data-status="{{ iss.status | lower }}" data-search="{{ iss.name | lower }} {{ iss.subject | lower }} {{ iss.status | lower }} {{ iss.priority | lower }}">
+        <div class="issue-icon" style="background:{{ colors[0] }};color:{{ colors[1] }}">
+          {{ icon_map.get(iss.priority, '⚪') }}
+        </div>
+        <div class="issue-body">
+          <div class="issue-subject">{{ iss.subject }}</div>
+          <div class="issue-meta">
+            {{ iss.name }} · Opened {{ frappe.format_date(iss.opening_date) }} · Last updated {{ frappe.format_date(iss.modified) }}
+          </div>
+        </div>
+        <div class="issue-row-actions">
+          <button class="issue-action-btn js-view-issue" data-name="{{ iss.name }}" data-subject="{{ iss.subject }}" title="View issue">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><ellipse cx="8" cy="8" rx="6.5" ry="4"/><circle cx="8" cy="8" r="1.8" fill="currentColor" stroke="none"/></svg>
+            View
+          </button>
+          <button class="issue-action-btn edit js-edit-issue" data-name="{{ iss.name }}" data-subject="{{ iss.subject }}" title="Edit issue">
+            <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><path d="M11 2l3 3-8 8H3v-3l8-8z"/></svg>
+            Edit
+          </button>
+        </div>
+        <span class="badge {{ iss.status_class }}">{{ iss.status }}</span>
+      </div>
+      {% else %}
+      <div class="empty-state"><div class="icon">✅</div><p>No se encontraron solicitudes de soporte.</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

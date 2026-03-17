@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Clientes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/customer_portal/css/portal.css" />
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <img src='{{ banner_image }}' height="40px">
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Vista General</div>
+      <a class="nav-item active" data-section="overview" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        Dashboard
+      </a>
+
+      <div class="nav-section-label">Movimientos</div>
+      <a class="nav-item" data-section="quotations" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><path d="M9 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V7l-5-5z"/><path d="M9 2v5h5"/></svg>
+        Cotizaciones
+        {% if kpi.pending_quotes > 0 %}<span class="nav-badge">{{ kpi.pending_quotes }}</span>{% endif %}
+      </a>
+      <a class="nav-item" data-section="sales-orders" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><path d="M2 2h2l2.4 7.4a1 1 0 00.95.6h5.25a1 1 0 00.97-.75l1.18-4.5H4.5"/><circle cx="7" cy="13.5" r="1"/><circle cx="12" cy="13.5" r="1"/></svg>
+        Pedidos/Renovaciones
+        {% if kpi.open_orders > 0 %}<span class="nav-badge">{{ kpi.open_orders }}</span>{% endif %}
+      </a>
+      <a class="nav-item" data-section="invoices" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1.5"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        Facturas
+        {% if kpi.unpaid_count > 0 %}<span class="nav-badge">{{ kpi.unpaid_count }}</span>{% endif %}
+      </a>
+      <a class="nav-item" data-section="payments" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="1.5"/><path d="M1 7h14"/></svg>
+        Pagos
+      </a>
+
+      <div class="nav-section-label">Soporte</div>
+      <a class="nav-item" data-section="issues" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11v.5"/></svg>
+        Solicitudes de Soporte
+      </a>
+
+      <div class="nav-section-label">Mi Cuenta</div>
+      <a class="nav-item" data-section="addresses" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5s4.5-5 4.5-8.5c0-2.5-2-4.5-4.5-4.5z"/><circle cx="8" cy="6" r="1.5"/></svg>
+        Direcciones
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">{{ customer_name[:2] | upper }}</div>
+        <div class="user-info">
+          <div class="user-name">{{ customer_name }}</div>
+          <div class="user-role">{{ user_email }}</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ──────────────────────────────────────────────── -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-search">
+        <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5L14 14"/></svg>
+        <input type="text" placeholder="Buscar…" />
+      </div>
+      <div class="topbar-actions">
+        <div class="topbar-btn notif-dot" id="notif-toggle-btn" title="Notificaciones">
+          <svg width="15" height="15" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><path d="M8 1a5 5 0 015 5v2.5l1.5 2H1.5L3 8.5V6a5 5 0 015-5z"/><path d="M6.5 13.5a1.5 1.5 0 003 0"/></svg>
+        </div>
+        <div class="user-menu-wrap">
+          <button class="user-menu-btn" id="user-menu-btn" title="Cuenta">
+            <svg width="15" height="15" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="6" r="3"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-dropdown-header">
+              <div class="user-dropdown-name">{{ user_full_name }}</div>
+              <div class="user-dropdown-email">{{ user_email }}</div>
+            </div>
+            <div class="user-dropdown-menu">
+              <a class="user-dropdown-item" href="https://bimxcloud.com/me" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><circle cx="8" cy="6" r="3.5"/><path d="M1.5 14c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/></svg>
+                Mi Perfil
+              </a>
+              <div class="user-dropdown-divider"></div>
+              <button class="user-dropdown-item danger js-logout">
+                <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.7"><path d="M6 2H2.5A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14H6"/><path d="M11 11l4-4-4-4"/><path d="M15 8H6"/></svg>
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      {% include "www/customer_portal/sections/overview.html" %}
+      {% include "www/customer_portal/sections/quotations.html" %}
+      {% include "www/customer_portal/sections/sales_orders.html" %}
+      {% include "www/customer_portal/sections/invoices.html" %}
+      {% include "www/customer_portal/sections/payments.html" %}
+      {% include "www/customer_portal/sections/issues.html" %}
+      {% include "www/customer_portal/sections/addresses.html" %}
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+{% include "www/customer_portal/modals/address_modal.html" %}
+{% include "www/customer_portal/modals/issue_modal.html" %}
+{% include "www/customer_portal/modals/print_modal.html" %}
+{% include "www/customer_portal/modals/notification_panel.html" %}
+
+<script>
+  // Expose user email to JS for notification API calls
+  const PORTAL_USER_EMAIL = '{{ user_email }}';
+</script>
+<script src="/assets/customer_portal/js/portal_nav.js"></script>
+<script src="/assets/customer_portal/js/portal_modals.js"></script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!-- ───── DASHBOARD ───── -->
+<section class="section active" id="overview">
+  <div class="welcome-bar">
+    <h1>Hola, {{ user_full_name }} 👋</h1>
+    <p>Aquí tienes un resumen de tu actividad.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card" style="--card-accent:#4f8eff">
+      <div class="kpi-label">Pedidos/Renovaciones Pendientes</div>
+      <div class="kpi-value">{{ kpi.open_orders }}</div>
+      <div class="kpi-sub">{{ kpi.open_orders }} pedido{{ 's' if kpi.open_orders != 1 }} activo{{ 's' if kpi.open_orders != 1 }}</div>
+      <div class="kpi-icon">📦</div>
+    </div>
+    <div class="kpi-card" style="--card-accent:#2dd4a0">
+      <div class="kpi-label">Saldo Pendiente</div>
+      <div class="kpi-value">{{ frappe.format_value(kpi.orders_total, 'Currency') }}</div>
+      <div class="kpi-sub">{{ kpi.open_orders }} facturas pendientes{{ 's' if kpi.unpaid_count != 1 }}</div>
+      <div class="kpi-icon">💸</div>
+    </div>
+    <div class="kpi-card" style="--card-accent:#f5b944">
+      <div class="kpi-label">Cotizaciones Pendientes</div>
+      <div class="kpi-value">{{ kpi.pending_quotes }}</div>
+      <div class="kpi-sub">Esperando tu aprobación</div>
+      <div class="kpi-icon">📋</div>
+    </div>
+    <div class="kpi-card" style="--card-accent:#f56565">
+      <div class="kpi-label">Solicitudes de Soporte</div>
+      <div class="kpi-value">{{ kpi.open_issues }}</div>
+      <div class="kpi-sub">{{ kpi.in_progress_issues }} en revisión</div>
+      <div class="kpi-icon">🔧</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Facturas Recientes</div>
+          <div class="card-subtitle">Últimos 30 días</div>
+        </div>
+        <a class="card-action" data-section="invoices" href="#">Ver todas →</a>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Factura</th><th>Fecha</th><th>Monto</th><th>Estado</th></tr></thead>
+        <tbody>
+          {% for inv in invoices[:3] %}
+          <tr>
+            <td><span class="doc-id">{{ inv.name }}</span></td>
+            <td>{{ frappe.format_date(inv.posting_date) }}</td>
+            <td class="amount {% if inv.outstanding_amount == 0 %}positive{% endif %}">
+              {{ frappe.format_value(inv.grand_total, 'Currency') }}
+            </td>
+            <td><span class="badge {{ inv.status_class }}">{{ inv.status }}</span></td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="empty-state"><p>No existen facturas.</p></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Actividad Reciente</div>
+          <div class="card-subtitle">Últimas actualizaciones</div>
+        </div>
+      </div>
+      <div class="activity-list">
+        {% for event in recent_activity %}
+        <div class="activity-item">
+          <div class="activity-dot" style="background:{{ event.color }}"></div>
+          <div>
+            <div class="activity-text">{{ event.text }}</div>
+            <div class="activity-time">{{ frappe.format_date(event.date) }}</div>
+          </div>
+        </div>
+        {% else %}
+        <div class="empty-state"><p>No existen actividades recientes.</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

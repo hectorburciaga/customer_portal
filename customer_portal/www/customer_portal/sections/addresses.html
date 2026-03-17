@@ -1,0 +1,34 @@
+<!-- ───── ADDRESSES ───── -->
+<section class="section" id="addresses">
+  <div class="page-header">
+    <div>
+      <h2>Direcciones</h2>
+      <p>Administra tus direcciones de envío y facturación</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary js-new-address">
+        <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><line x1="8" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="14" y2="8"/></svg>
+        Agregar Dirección
+      </button>
+    </div>
+  </div>
+  <div class="address-grid">
+    {% for addr in addresses %}
+    <div class="address-card {{ 'primary' if addr.is_primary_address }}">
+      <div class="address-type">{{ addr.address_type }}</div>
+      <div class="address-name">{{ addr.address_title }}</div>
+      <div class="address-lines">
+        {{ addr.address_line1 }}<br>
+        {% if addr.address_line2 %}{{ addr.address_line2 }}<br>{% endif %}
+        {{ addr.city }}{% if addr.state %}, {{ addr.state }}{% endif %} {{ addr.pincode }}<br>
+        {{ addr.country }}
+      </div>
+      <div class="address-actions">
+        <button class="addr-btn edit js-edit-address" data-name="{{ addr.name }}" data-title="{{ addr.address_title }}">Edit</button>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="icon">📍</div><p>No se encontraron direcciones. Agrega una para comenzar.</p></div>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,62 @@
+<!-- ───── PAYMENTS ───── -->
+<section class="section" id="payments">
+  <div class="page-header">
+    <div>
+      <h2>Pagos</h2>
+      <p>Todos los pagos realizados.</p>
+    </div>
+  </div>
+  <div class="two-col" style="margin-bottom:20px">
+    <div class="kpi-card" style="--card-accent:#2dd4a0">
+      <div class="kpi-label">Total Pagado (Hasta la fecha)</div>
+      <div class="kpi-value">{{ frappe.format_value(payments.total_paid, 'Currency') }}</div>
+      <div class="kpi-sub">{{ payments.received | length }} transaccion{{ 'es' if payments.received | length != 1 }}</div>
+    </div>
+    <div class="kpi-card" style="--card-accent:#f56565">
+      <div class="kpi-label">Pendiente</div>
+      <div class="kpi-value">{{ frappe.format_value(kpi.orders_total, 'Currency') }}</div>
+      <div class="kpi-sub">{{ kpi.open_orders }} factura{{ 's' if kpi.open_orders != 1 }} pendiente{{ 's' if kpi.open_orders != 1 }}</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><div><div class="card-title">Historial de Pagos</div></div></div>
+    <div class="payment-timeline">
+      {% for pay in payments.received %}
+      <div class="timeline-item">
+        <div class="timeline-icon success">✓</div>
+        <div class="timeline-body">
+          <div class="timeline-title">
+            Payment{% if pay.invoice_refs %} for {{ pay.invoice_refs[0].reference_name }}{% endif %}
+          </div>
+          <div class="timeline-meta">
+            {{ frappe.format_date(pay.posting_date) }}
+            {% if pay.mode_of_payment %} · {{ pay.mode_of_payment }}{% endif %}
+            {% if pay.reference_no %} · Ref: {{ pay.reference_no }}{% endif %}
+          </div>
+          <div class="timeline-amount">{{ frappe.format_value(pay.paid_amount, 'Currency') }}</div>
+        </div>
+        <span class="badge badge-green">Completado</span>
+      </div>
+      {% endfor %}
+
+      {% for inv in payments.outstanding %}
+      {% set is_overdue = inv.status == 'Overdue' %}
+      <div class="timeline-item">
+        <div class="timeline-icon {{ 'failed' if is_overdue else 'pending' }}">{{ '!' if is_overdue else '⏳' }}</div>
+        <div class="timeline-body">
+          <div class="timeline-title">{{ 'Overdue' if is_overdue else 'Outstanding' }} — {{ inv.name }}</div>
+          <div class="timeline-meta">Due {{ frappe.format_date(inv.due_date) }}</div>
+          <div class="timeline-amount" style="color:var({{ '--red' if is_overdue else '--amber' }})">
+            {{ frappe.format_value(inv.outstanding_amount, 'Currency') }}
+          </div>
+        </div>
+        <span class="badge {{ 'badge-red' if is_overdue else 'badge-amber' }}">{{ 'Overdue' if is_overdue else 'Pending' }}</span>
+      </div>
+      {% endfor %}
+
+      {% if not payments.received and not payments.outstanding %}
+      <div class="empty-state"><div class="icon">💳</div><p>No existen pagos.</p></div>
+      {% endif %}
+    </div>
+  </div>
+</section>

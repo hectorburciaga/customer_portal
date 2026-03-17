@@ -1,0 +1,44 @@
+<!-- ───── QUOTATIONS ───── -->
+<section class="section" id="quotations">
+  <div class="page-header">
+    <div>
+      <h2>Cotizaciones</h2>
+      <p>Revisa y aprueba las cotizaciones recibidas.</p>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-chip active">Todas</span>
+    <span class="filter-chip">Pendientes</span>
+    <span class="filter-chip">Aprobadas</span>
+    <span class="filter-chip">Expiradas</span>
+    <div class="filter-spacer"></div>
+    <div class="filter-input">
+      <svg width="12" height="12" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5L14 14"/></svg>
+      <input type="text" placeholder="Search quotes…" />
+    </div>
+  </div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>ID de Cotización</th><th>Fecha</th><th>Válido Hasta</th><th>Artículos</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+      <tbody>
+        {% for q in quotations %}
+        <tr data-status="{{ q.status | lower }}" data-search="{{ q.name | lower }} {{ q.status | lower }}">
+          <td><span class="doc-id">{{ q.name }}</span></td>
+          <td>{{ frappe.format_date(q.transaction_date) }}</td>
+          <td>{{ frappe.format_date(q.valid_till) if q.valid_till else '—' }}</td>
+          <td>{{ q.item_count }} item{{ 's' if q.item_count != 1 }}</td>
+          <td class="amount">{{ frappe.format_value(q.grand_total, 'Currency') }}</td>
+          <td><span class="badge {{ q.status_class }}">{{ q.status }}</span></td>
+          <td class="td-action">
+            <button class="print-btn js-open-print" data-doctype="Quotation" data-name="{{ q.name }}" title="Print / PDF">
+              <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M4 5V2h8v3"/><rect x="1" y="5" width="14" height="7" rx="1.5"/><path d="M4 9h8M4 12h5"/><circle cx="12.5" cy="8" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7"><div class="empty-state"><div class="icon">📋</div><p>No quotations found.</p></div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>

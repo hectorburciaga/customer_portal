@@ -1,0 +1,29 @@
+<!-- ── PRINT / PDF MODAL ─────────────────────────────────── -->
+<div class="print-modal-backdrop" id="print-modal" role="dialog" aria-modal="true" aria-labelledby="print-modal-title-text">
+  <div class="print-modal">
+    <div class="print-modal-header">
+      <div class="print-modal-meta">
+        <div class="print-modal-title" id="print-modal-title-text">Document</div>
+        <div class="print-modal-subtitle" id="print-modal-subtitle"></div>
+      </div>
+      <div class="print-modal-actions">
+        <a id="print-modal-download" href="#" download class="btn btn-secondary" target="_blank">
+          <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.8"><path d="M8 2v8M5 7l3 3 3-3"/><path d="M2 12h12"/></svg>
+          Download PDF
+        </a>
+        <button id="print-modal-print" class="btn btn-primary">
+          <svg width="13" height="13" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.8"><path d="M4 5V2h8v3"/><rect x="1" y="5" width="14" height="7" rx="1.5"/><path d="M4 9h8M4 12h5"/><circle cx="12.5" cy="8" r="0.8" fill="currentColor" stroke="none"/></svg>
+          Print
+        </button>
+        <button class="modal-close js-close-print" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="print-modal-body">
+      <div class="print-modal-loading" id="print-modal-loading">
+        <div class="spinner"></div>
+        <span>Preparing document…</span>
+      </div>
+      <iframe id="print-iframe" title="Document Preview"></iframe>
+    </div>
+  </div>
+</div>

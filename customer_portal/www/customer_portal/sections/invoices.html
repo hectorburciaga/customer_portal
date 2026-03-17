@@ -1,0 +1,46 @@
+<!-- ───── INVOICES ───── -->
+<section class="section" id="invoices">
+  <div class="page-header">
+    <div>
+      <h2>Facturas</h2>
+      <p>Tu historial de facturación y pagos pendientes</p>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <span class="filter-chip active">Todas</span>
+    <span class="filter-chip">Pendientes</span>
+    <span class="filter-chip">Pagadas</span>
+    <span class="filter-chip">Vencidas</span>
+    <div class="filter-spacer"></div>
+    <div class="filter-input">
+      <svg width="12" height="12" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="2"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5L14 14"/></svg>
+      <input type="text" placeholder="Buscar facturas…" />
+    </div>
+  </div>
+  <div class="card">
+    <table class="data-table">
+      <thead><tr><th>Factura</th><th>Referencia de Pedido</th><th>Fecha</th><th>Fecha de Vencimiento</th><th>Monto</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for inv in invoices %}
+        <tr data-status="{{ inv.status | lower }}" data-search="{{ inv.name | lower }} {{ (inv.sales_order_ref or '') | lower }} {{ inv.status | lower }}">
+          <td><span class="doc-id">{{ inv.name }}</span></td>
+          <td>{{ inv.sales_order_ref or '—' }}</td>
+          <td>{{ frappe.format_date(inv.posting_date) }}</td>
+          <td>{{ frappe.format_date(inv.due_date) if inv.due_date else '—' }}</td>
+          <td class="amount {% if inv.outstanding_amount == 0 %}positive{% endif %}">
+            {{ frappe.format_value(inv.grand_total, 'Currency') }}
+          </td>
+          <td><span class="badge {{ inv.status_class }}">{{ inv.status }}</span></td>
+          <td class="td-action">
+            <button class="print-btn js-open-print" data-doctype="Sales Invoice" data-name="{{ inv.name }}" title="Print / PDF">
+              <svg width="14" height="14" fill="none" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M4 5V2h8v3"/><rect x="1" y="5" width="14" height="7" rx="1.5"/><path d="M4 9h8M4 12h5"/><circle cx="12.5" cy="8" r="0.8" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7"><div class="empty-state"><div class="icon">🧾</div><p>No se encontraron facturas.</p></div></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
