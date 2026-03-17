@@ -26,19 +26,11 @@ portal_menu_items = [
 # So  customer_portal/public/css/portal.css
 #  → /assets/customer_portal/css/portal.css
 #
-# The web_include_* lists below inject the files into every portal
-# page automatically. If you prefer to load them only on the
-# customer_portal page, reference them directly in the HTML
-# <link> / <script> tags instead and remove these entries.
-
-web_include_css = [
-    "/assets/customer_portal/css/portal.css",
-]
-
-web_include_js = [
-    "/assets/customer_portal/js/portal_nav.js",
-    "/assets/customer_portal/js/portal_modals.js",
-]
+# CSS and JS are loaded directly inside customer_portal.html via
+# <link> and <script> tags so they are scoped to that page only.
+# Using web_include_* here would inject them into every web page
+# on the site (including web forms loaded in iframes), causing
+# style and script conflicts.
 
 # ── Jinja environment ─────────────────────────────────────────
 # Exposes frappe.format_value / frappe.format_date inside templates.
