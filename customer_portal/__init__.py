@@ -1,3 +1,1 @@
-# __init__.py
-# Required for Python to treat this directory as a package.
-# Leave empty.
+__version__ = "1.0.0"
