@@ -374,7 +374,7 @@ body {
 }
 .modal-close:hover { border-color: var(--border2); color: var(--text); }
 .modal-body { flex: 1; overflow: hidden; position: relative; min-height: 0; }
-.modal-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; background: #fff; }
+.modal-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; outline: none; display: block; background: #fff; }
 .modal-loading {
   position: absolute; inset: 0; display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 12px;
@@ -409,7 +409,7 @@ body {
 .print-modal-subtitle { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .print-modal-actions { display: flex; align-items: center; gap: 8px; }
 .print-modal-body { flex: 1; min-height: 0; overflow: hidden; position: relative; background: #f0f0f0; }
-.print-modal-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+.print-modal-body iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; outline: none; display: block; }
 .print-modal-loading {
   position: absolute; inset: 0; display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 12px;
