@@ -58,7 +58,7 @@ body {
   overflow-y: auto;
 }
 .sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
-.logo-mark { display: flex; align-items: center; gap: 10px; }
+.logo-mark { display: flex; align-items: center; justify-content: center; gap: 10px; }
 .logo-icon {
   width: 32px; height: 32px;
   background: linear-gradient(135deg, var(--accent), #7eb3ff);
@@ -66,7 +66,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 16px;
 }
-.logo-text { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.logo-text { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); letter-spacing: -0.3px; text-align: center; }
 .logo-sub { font-size: 10px; color: var(--text3); letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px; }
 
 .sidebar-nav { flex: 1; padding: 16px 12px; }
